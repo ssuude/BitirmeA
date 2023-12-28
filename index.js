@@ -5,6 +5,7 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const csurf = require("csurf");
 
 // node modules
 const path = require("path");
@@ -17,16 +18,15 @@ const authRoutes = require("./routes/auth");
 // custom modules
 const sequelize = require("./data/db");
 const dummyData = require("./data/dummy-data");
+const locals = require("./middlewares/locals");
+
+// template engine
+app.set("view engine", "ejs");
 
 // models
 const Category = require("./models/category");
 const Blog = require("./models/blog");
 const User = require("./models/user");
-
-// template engine
-app.set("view engine", "ejs");
-
-
 
 // middleware
 app.use(express.urlencoded({ extended: false }));
@@ -42,6 +42,9 @@ app.use(session({
         db: sequelize
     })
 }));
+
+app.use(locals);
+app.use(csurf());
 
 app.use("/libs", express.static(path.join(__dirname, "node_modules")));
 app.use("/static", express.static(path.join(__dirname, "public")));

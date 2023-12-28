@@ -17,8 +17,7 @@ exports.blogs_details = async function(req, res) {
         if(blog) {
             return res.render("users/blog-details", {
                 title: blog.baslik,
-                blog: blog,
-                isAuth: req.session.isAuth
+                blog: blog
             });
         }
         res.redirect("/");
@@ -51,8 +50,7 @@ exports.blog_list = async function(req, res) {
             totalPages: Math.ceil(count / size),
             currentPage: page,
             categories: categories,
-            selectedCategory: slug,
-            isAuth: req.session.isAuth
+            selectedCategory: slug
         })
     }
     catch(err) {
@@ -78,8 +76,7 @@ exports.index = async function(req, res) {
             title: "Popüler Kurslar",
             blogs: blogs,
             categories: categories,
-            selectedCategory: null,
-            isAuth: req.session.isAuth
+            selectedCategory: null
         })
     }
     catch(err) {
